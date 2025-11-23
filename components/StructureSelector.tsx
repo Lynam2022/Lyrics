@@ -17,8 +17,6 @@ const TEXT = {
             standard: "Cấu trúc kinh điển: Verse - Chorus - Verse - Chorus - Reprise - Outro.",
             bridge: "Thêm đoạn Bridge (Cầu nối) tạo cao trào cảm xúc trước Chorus cuối.",
             pop: "Phong cách Pop hiện đại với Pre-Chorus xây dựng kịch tính và Bridge.",
-            rap: "Cấu trúc Rap/Hip-Hop: 3 đoạn Verse dài để kể chuyện, xen kẽ Hook bắt tai.",
-            edm: "Cấu trúc nhạc điện tử/Dance: Verse dẫn dắt, Build Up đẩy kịch tính, Drop bùng nổ.",
             custom: "Tự thiết kế cấu trúc bài hát theo ý muốn của bạn."
         },
         placeholder: "Nhập cấu trúc mong muốn (VD: Verse 1 - Chorus - Rap - Chorus...)"
@@ -29,8 +27,6 @@ const TEXT = {
             standard: "Classic flow: Verse - Chorus - Verse - Chorus - Reprise - Outro.",
             bridge: "Adds a Bridge for an emotional peak before the final Chorus.",
             pop: "Modern Pop style with Pre-Choruses building tension and a Bridge.",
-            rap: "Rap/Hip-Hop structure: 3 long Verses for storytelling, interleaved with catchy Hooks.",
-            edm: "Electronic/Dance flow: Verse leads in, Build Up raises tension, Drop explodes.",
             custom: "Design your own song structure exactly how you want it."
         },
         placeholder: "Enter desired structure (e.g., Verse 1 - Chorus - Rap - Chorus...)"
@@ -41,8 +37,6 @@ const VN_TITLES: Record<SongStructure, string> = {
     [SongStructure.Standard]: "Tiêu Chuẩn",
     [SongStructure.WithBridge]: "Có Bridge (Cầu nối)",
     [SongStructure.Pop]: "Pop / Hiện đại",
-    [SongStructure.Rap]: "Rap / Hip-Hop",
-    [SongStructure.EDM]: "EDM / Dance / Vinahouse",
     [SongStructure.Custom]: "Tùy chỉnh (Custom)"
 };
 
@@ -61,8 +55,6 @@ const StructureSelector: React.FC<StructureSelectorProps> = ({
       case SongStructure.Standard: return t.details.standard;
       case SongStructure.WithBridge: return t.details.bridge;
       case SongStructure.Pop: return t.details.pop;
-      case SongStructure.Rap: return t.details.rap;
-      case SongStructure.EDM: return t.details.edm;
       case SongStructure.Custom: return t.details.custom;
       default: return "";
     }

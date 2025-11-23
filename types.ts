@@ -38,8 +38,6 @@ export enum SongStructure {
   Standard = 'Standard (V-C-V-C-C-O)',
   WithBridge = 'With Bridge (V-C-V-C-B-C-O)',
   Pop = 'Pop / Modern (V-PC-C-V-PC-C-B-C-O)',
-  Rap = 'Rap / Hip-Hop (I-V1-H-V2-H-V3-H-O)',
-  EDM = 'EDM / Dance (I-V-Build-Drop-V-Build-Drop-O)',
   Custom = 'Custom / Tùy chỉnh',
 }
 
@@ -66,6 +64,9 @@ export enum VocalCharacteristic {
   Raspy = 'Khàn',
   Smooth = 'Mượt mà',
   Vulnerable = 'Mong manh',
+  Bouncy = 'Nảy',
+  LaidBack = 'Thư thái',
+  Whispery = 'Thì thầm',
 }
 
 export type Language = 'vn' | 'en';

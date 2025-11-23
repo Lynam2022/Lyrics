@@ -32,58 +32,93 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ mode = 'generating' }) 
   useEffect(() => {
     const interval = setInterval(() => {
       setMessageIndex((prev) => (prev + 1) % messages.length);
-    }, 1500); // Change message every 1.5 seconds
+    }, 2000);
 
     return () => clearInterval(interval);
   }, [messages.length]);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full py-12 relative overflow-hidden rounded-xl bg-gray-800/30 border border-gray-700/50 backdrop-blur-md">
-      {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl animate-pulse"></div>
+    <div className="flex flex-col items-center justify-center w-full py-16 relative overflow-hidden rounded-3xl bg-gray-900/50 border border-gray-700/30 backdrop-blur-xl shadow-2xl group">
+      
+      {/* Dynamic Background Gradients */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-90 z-0"></div>
+      
+      {/* Rotating & Pulsing Glows */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-teal-500/5 rounded-full blur-[100px] animate-pulse-slow pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-cyan-500/10 rounded-full blur-[80px] animate-pulse pointer-events-none mix-blend-screen"></div>
+      
+      {/* Rotating Ring Border Effect */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full border border-teal-500/20 border-t-teal-500/80 animate-spin-slow z-0"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border border-cyan-400/10 border-b-cyan-400/60 animate-spin-reverse z-0"></div>
 
-      {/* Sound Wave Animation */}
-      <div className="flex items-end justify-center gap-1 h-16 mb-6 z-10">
-        {[...Array(8)].map((_, i) => (
+      {/* Center Visual: Dynamic Equalizer / Sound Wave */}
+      <div className="relative z-10 flex items-center justify-center h-24 w-full gap-1.5 mb-6">
+        {[...Array(12)].map((_, i) => (
           <div
             key={i}
-            className="w-2 bg-gradient-to-t from-teal-500 to-cyan-300 rounded-t-sm animate-sound-wave"
+            className="w-1.5 bg-gradient-to-t from-teal-600 via-teal-400 to-cyan-200 rounded-full shadow-[0_0_15px_rgba(45,212,191,0.5)]"
             style={{
-              animationDelay: `${i * 0.1}s`,
-              height: '20%', // Initial height
+              animation: `music-bar 1.2s ease-in-out infinite`,
+              animationDelay: `${i * 0.1 - 0.6}s`, // Staggered start
+              height: '20%',
             }}
           ></div>
         ))}
       </div>
 
-      {/* Dynamic Text */}
-      <div className="flex flex-col items-center z-10">
-        <h3 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-200 to-cyan-200 mb-2 tracking-wide">
-          AI Songwriter Studio
-        </h3>
-        <div className="h-6 overflow-hidden relative">
-             <p key={messageIndex} className="text-sm text-teal-400/80 font-mono animate-fade-in-up">
+      {/* Text Container */}
+      <div className="flex flex-col items-center z-10 relative">
+        <div className="flex items-center gap-2 mb-3">
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-teal-500"></span>
+            </span>
+            <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-200 to-cyan-200 tracking-widest uppercase">
+            AI Thinking
+            </h3>
+        </div>
+        
+        <div className="h-8 overflow-hidden relative flex items-center justify-center min-w-[280px]">
+             <p key={messageIndex} className="text-sm sm:text-base text-teal-300/90 font-mono animate-slide-up-fade text-center">
                 {messages[messageIndex]}
              </p>
         </div>
       </div>
 
-      {/* Inline Styles for the custom animation */}
+      {/* CSS Animations */}
       <style>{`
-        @keyframes sound-wave {
-          0% { height: 20%; opacity: 0.5; }
-          50% { height: 100%; opacity: 1; }
-          100% { height: 20%; opacity: 0.5; }
+        @keyframes music-bar {
+          0% { height: 15%; opacity: 0.3; }
+          50% { height: 80%; opacity: 1; box-shadow: 0 0 20px rgba(45,212,191,0.6); }
+          100% { height: 15%; opacity: 0.3; }
         }
-        .animate-sound-wave {
-          animation: sound-wave 1.2s ease-in-out infinite;
+        @keyframes spin-slow {
+          0% { transform: translate(-50%, -50%) rotate(0deg); }
+          100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
-        @keyframes fade-in-up {
-            0% { opacity: 0; transform: translateY(10px); }
-            100% { opacity: 1; transform: translateY(0); }
+        @keyframes spin-reverse {
+          0% { transform: translate(-50%, -50%) rotate(360deg); }
+          100% { transform: translate(-50%, -50%) rotate(0deg); }
         }
-        .animate-fade-in-up {
-            animation: fade-in-up 0.3s ease-out forwards;
+        .animate-spin-slow {
+          animation: spin-slow 8s linear infinite;
+        }
+        .animate-spin-reverse {
+            animation: spin-reverse 12s linear infinite;
+        }
+        @keyframes slide-up-fade {
+            0% { opacity: 0; transform: translateY(10px); filter: blur(4px); }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+        .animate-slide-up-fade {
+            animation: slide-up-fade 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 4s ease-in-out infinite;
         }
       `}</style>
     </div>

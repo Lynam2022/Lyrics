@@ -110,7 +110,8 @@ const GenreSelector: React.FC<GenreSelectorProps> = ({ selectedGenres, onToggleG
                                 <span className="w-1.5 h-1.5 bg-teal-500 rounded-full shadow-[0_0_8px_rgba(20,184,166,0.8)]"></span>
                                 {t.groups[groupName as keyof typeof t.groups] || groupName}
                             </h4>
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-3 gap-y-2.5">
+                            {/* Updated Grid Layout for better screen usage */}
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-3 gap-y-2.5">
                                 {filteredGenreGroups[groupName].map((genre) => (
                                     <label key={genre} className={`
                                         flex items-center space-x-2.5 cursor-pointer p-2.5 rounded-lg border transition-all duration-200 group
@@ -134,7 +135,7 @@ const GenreSelector: React.FC<GenreSelectorProps> = ({ selectedGenres, onToggleG
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                                             </svg>
                                         </div>
-                                        <span className={`text-sm sm:text-base font-medium transition-colors truncate ${selectedGenres.includes(genre) ? 'text-teal-100' : 'text-gray-300 group-hover:text-gray-100'}`}>
+                                        <span className={`text-sm font-medium transition-colors truncate ${selectedGenres.includes(genre) ? 'text-teal-100' : 'text-gray-300 group-hover:text-gray-100'}`}>
                                             {genre}
                                         </span>
                                     </label>

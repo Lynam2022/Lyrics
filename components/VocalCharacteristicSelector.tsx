@@ -40,7 +40,10 @@ const CHAR_MAP: Record<string, string> = {
     'Giọng mũi': 'Nasal',
     'Khàn': 'Raspy',
     'Mượt mà': 'Smooth',
-    'Mong manh': 'Vulnerable'
+    'Mong manh': 'Vulnerable',
+    'Nảy': 'Bouncy',
+    'Thư thái': 'Laid-back',
+    'Thì thầm': 'Whispery'
 };
 
 const VocalCharacteristicSelector: React.FC<VocalCharacteristicSelectorProps> = ({ selectedCharacteristics, onToggleCharacteristic, language }) => {

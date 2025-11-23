@@ -117,7 +117,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ data, selectedTitle, on
 
   return (
     <div className="mt-10 space-y-8 animate-fade-in">
-      {/* Song Titles */}
+      {/* Song Titles Section */}
       {data.titles.length > 0 && (
           <div>
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5 gap-4">
@@ -179,6 +179,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ data, selectedTitle, on
           </div>
       )}
 
+      {/* Main Content Area */}
       <div className="relative">
         {isRegenerating && (
           <div className="absolute inset-0 bg-gray-900/80 backdrop-blur-md flex flex-col items-center justify-center rounded-2xl z-20 border border-teal-500/30">
@@ -187,105 +188,111 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ data, selectedTitle, on
           </div>
         )}
 
-        <div className={`space-y-8 ${isRegenerating ? 'opacity-30 pointer-events-none' : ''} transition-opacity duration-300`}>
-          {/* Lyrics */}
-          <div>
-            <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-black text-teal-400 tracking-tight">{t.generatedLyrics}</h2>
-                <button
-                    onClick={handleCopy}
-                    className="px-5 py-2 text-xs font-bold rounded-lg transition-colors duration-200 bg-gray-700 text-gray-200 hover:bg-gray-600 hover:text-white shadow-md"
-                >
-                    {copied ? t.copied : t.copy}
-                </button>
-            </div>
-            
-            {/* Compact Narrative Coherence Check */}
-            {coherence && (
-                <div className={`mb-6 rounded-xl border overflow-hidden transition-all duration-300 ${
-                    hasIssues 
-                    ? 'border-orange-500/30 bg-orange-900/10' 
-                    : 'border-teal-500/30 bg-teal-900/10'
-                }`}>
-                    <button 
-                        onClick={() => setShowCoherenceDetails(!showCoherenceDetails)}
-                        className={`w-full flex items-center justify-between p-3 text-left hover:bg-gray-800/50 transition-colors focus:outline-none group`}
+        <div className={`${isRegenerating ? 'opacity-30 pointer-events-none' : ''} transition-opacity duration-300 space-y-6`}>
+          
+          {/* Section 1: Lyrics (Full Width) */}
+          <div className="w-full flex flex-col h-full">
+                <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-2xl font-black text-teal-400 tracking-tight">{t.generatedLyrics}</h2>
+                    <button
+                        onClick={handleCopy}
+                        className="px-5 py-2 text-xs font-bold rounded-lg transition-colors duration-200 bg-gray-700 text-gray-200 hover:bg-gray-600 hover:text-white shadow-md"
                     >
-                        <div className="flex items-center gap-3">
-                             {hasIssues ? (
-                                <AlertIcon className="w-5 h-5 text-orange-400" />
-                             ) : (
-                                <CheckCircleIcon className="w-5 h-5 text-teal-400" />
-                             )}
-                             <div>
-                                 <span className={`text-sm sm:text-base font-bold ${hasIssues ? 'text-orange-200' : 'text-teal-200'}`}>
-                                     {t.logicCheck}
-                                 </span>
-                                 <span className="mx-2 text-gray-600">|</span>
-                                 <span className={`text-xs font-mono px-2 py-0.5 rounded border font-bold ${
-                                     hasIssues 
-                                     ? 'border-orange-500/30 text-orange-400' 
-                                     : 'border-teal-500/30 text-teal-400'
-                                 }`}>
-                                     {t.score}: {coherence.overallScore}/10
-                                 </span>
-                             </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold group-hover:text-gray-300 transition-colors">
-                                {showCoherenceDetails ? t.hideReport : t.viewReport}
-                            </span>
-                            <svg 
-                                className={`w-4 h-4 text-gray-500 transition-transform duration-300 ${showCoherenceDetails ? 'rotate-180' : ''}`} 
-                                fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
+                        {copied ? t.copied : t.copy}
                     </button>
-
-                    {showCoherenceDetails && (
-                        <div className={`px-5 pb-5 pt-1 text-sm ${hasIssues ? 'text-orange-100/90' : 'text-teal-100/90'}`}>
-                            <div className="h-px w-full bg-gray-700/30 mb-3"></div>
-                            <p className="italic text-gray-400 mb-4 text-xs leading-relaxed border-l-2 border-gray-600 pl-3">
-                                " {coherence.critique} "
-                            </p>
-                            
-                            {hasIssues ? (
-                                <ul className="space-y-3">
-                                    {coherence.issues.map((issue, idx) => (
-                                        <li key={idx} className="bg-gray-900/60 p-3 rounded-lg border border-orange-500/20">
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <span className="text-[10px] font-black text-orange-400 uppercase tracking-wider bg-orange-900/30 px-1.5 py-0.5 rounded">{issue.section}</span>
-                                            </div>
-                                            <p className="text-gray-200 mb-2 text-sm font-medium">{issue.issue}</p>
-                                            <div className="flex items-start gap-2 text-sm text-teal-200 bg-teal-900/20 p-2.5 rounded-lg border border-teal-500/10">
-                                                <SparklesIcon className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-teal-400" />
-                                                <span>{issue.suggestion}</span>
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <div className="flex items-center gap-2 text-teal-400 font-medium bg-teal-900/20 p-3 rounded-lg text-sm">
-                                    <CheckCircleIcon className="w-4 h-4" />
-                                    <span>{t.passMessage}</span>
-                                </div>
-                            )}
-                        </div>
-                    )}
                 </div>
-            )}
-
-            <div className="bg-gray-800 p-6 rounded-2xl border border-gray-700 shadow-inner max-h-[70vh] overflow-y-auto custom-scrollbar">
-              <pre className="text-gray-100 whitespace-pre-wrap font-sans text-base sm:text-lg leading-loose tracking-wide">
-                {data.lyrics}
-              </pre>
-            </div>
+                
+                <div className="bg-gray-800 p-6 rounded-2xl border border-gray-700 shadow-inner max-h-[800px] overflow-y-auto custom-scrollbar flex-grow">
+                <pre className="text-gray-100 whitespace-pre-wrap font-sans text-base sm:text-lg leading-loose tracking-wide">
+                    {data.lyrics}
+                </pre>
+                </div>
           </div>
 
-          {/* Sound Style & Instrumentation */}
-          <SoundStyleDisplay data={data.soundStyle} title={t.soundStyle} />
+          {/* Section 2: Coherence Check (Full Width below Lyrics) */}
+          <div className="w-full">
+                 {coherence && (
+                    <div className={`rounded-xl border overflow-hidden transition-all duration-300 ${
+                        hasIssues 
+                        ? 'border-orange-500/30 bg-orange-900/10' 
+                        : 'border-teal-500/30 bg-teal-900/10'
+                    }`}>
+                        <button 
+                            onClick={() => setShowCoherenceDetails(!showCoherenceDetails)}
+                            className={`w-full flex items-center justify-between p-4 text-left hover:bg-gray-800/50 transition-colors focus:outline-none group`}
+                        >
+                            <div className="flex items-center gap-3">
+                                {hasIssues ? (
+                                    <AlertIcon className="w-5 h-5 text-orange-400" />
+                                ) : (
+                                    <CheckCircleIcon className="w-5 h-5 text-teal-400" />
+                                )}
+                                <div>
+                                    <span className={`text-base font-bold ${hasIssues ? 'text-orange-200' : 'text-teal-200'}`}>
+                                        {t.logicCheck}
+                                    </span>
+                                    <div className="mt-1 flex items-center gap-2">
+                                        <span className={`text-xs font-mono px-2 py-0.5 rounded border font-bold ${
+                                            hasIssues 
+                                            ? 'border-orange-500/30 text-orange-400' 
+                                            : 'border-teal-500/30 text-teal-400'
+                                        }`}>
+                                            {t.score}: {coherence.overallScore}/10
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold group-hover:text-gray-300 transition-colors">
+                                    {showCoherenceDetails ? t.hideReport : t.viewReport}
+                                </span>
+                                <svg 
+                                    className={`w-4 h-4 text-gray-500 transition-transform duration-300 ${showCoherenceDetails ? 'rotate-180' : ''}`} 
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+                        </button>
+
+                        {showCoherenceDetails && (
+                            <div className={`px-5 pb-5 pt-1 text-sm ${hasIssues ? 'text-orange-100/90' : 'text-teal-100/90'}`}>
+                                <div className="h-px w-full bg-gray-700/30 mb-3"></div>
+                                <p className="italic text-gray-400 mb-4 text-xs leading-relaxed border-l-2 border-gray-600 pl-3">
+                                    " {coherence.critique} "
+                                </p>
+                                
+                                {hasIssues ? (
+                                    <ul className="space-y-3">
+                                        {coherence.issues.map((issue, idx) => (
+                                            <li key={idx} className="bg-gray-900/60 p-3 rounded-lg border border-orange-500/20">
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <span className="text-[10px] font-black text-orange-400 uppercase tracking-wider bg-orange-900/30 px-1.5 py-0.5 rounded">{issue.section}</span>
+                                                </div>
+                                                <p className="text-gray-200 mb-2 text-sm font-medium">{issue.issue}</p>
+                                                <div className="flex items-start gap-2 text-sm text-teal-200 bg-teal-900/20 p-2.5 rounded-lg border border-teal-500/10">
+                                                    <SparklesIcon className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-teal-400" />
+                                                    <span>{issue.suggestion}</span>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <div className="flex items-center gap-2 text-teal-400 font-medium bg-teal-900/20 p-3 rounded-lg text-sm">
+                                        <CheckCircleIcon className="w-4 h-4" />
+                                        <span>{t.passMessage}</span>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                )}
+          </div>
+
+          {/* Section 3: Sound Style & Instrumentation (Full Width) */}
+          <div className="w-full">
+             <SoundStyleDisplay data={data.soundStyle} title={t.soundStyle} />
+          </div>
         </div>
       </div>
     </div>

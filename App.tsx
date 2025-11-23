@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Genre, SongData, LyricsAnalysisData, VoiceGender, VocalCharacteristic, SavedProject, SongStructure, Language } from './types';
 import GenreSelector from './components/GenreSelector';
@@ -11,6 +10,7 @@ import { MusicNoteIcon, SparklesIcon, BrainIcon, HeartIcon, EyeIcon, LinkIcon, F
 import TempoSelector from './components/TempoSelector';
 import LoadProjectModal from './components/LoadProjectModal';
 import StructureSelector from './components/StructureSelector';
+import BrandLogo from './components/BrandLogo';
 
 // --- TRANSLATION DATA ---
 const TEXT = {
@@ -28,7 +28,7 @@ const TEXT = {
         btnAnalyzeGen: "Phân Tích Lời Vừa Tạo",
         btnAnalyzeCustom: "Phân Tích Lời Của Tôi",
         customLyricsLabel: "DÁN LỜI BÀI HÁT CẦN PHÂN TÍCH VÀO ĐÂY",
-        footer: "Powered by Y2TubeX.Com",
+        footer: "Powered by",
         library: "Thư Viện",
         analysis: {
             deepDive: "PHÂN TÍCH CHUYÊN SÂU",
@@ -53,7 +53,7 @@ const TEXT = {
         btnAnalyzeGen: "Analyze Generated Lyrics",
         btnAnalyzeCustom: "Analyze My Lyrics",
         customLyricsLabel: "PASTE YOUR LYRICS HERE FOR ANALYSIS",
-        footer: "Powered by Y2TubeX.Com",
+        footer: "Powered by",
         library: "Library",
         analysis: {
             deepDive: "LYRICS DEEP DIVE",
@@ -71,7 +71,7 @@ const GENRE_TEMPO_DEFAULTS: Record<Genre, number> = {
     // International
     [Genre.Pop]: 105,
     [Genre.Rock]: 125,
-    [Genre.Ballad]: 68,
+    [Genre.Ballad]: 75,
     [Genre.HipHop]: 90,
     [Genre.Electronic]: 128,
     [Genre.Country]: 110,
@@ -595,47 +595,56 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white font-sans flex flex-col items-center p-4 sm:p-6 lg:p-8 selection:bg-teal-500/30 selection:text-teal-200">
-      <div className="w-full max-w-5xl mx-auto relative z-10">
+      <div className="w-full max-w-4xl mx-auto relative z-10">
         
         {/* Top Navigation Bar */}
-        <div className="flex justify-between items-center mb-8 bg-gray-800/40 backdrop-blur-md p-2.5 rounded-2xl border border-gray-700/50">
-             {/* Language Switcher */}
-             <div className="flex items-center bg-gray-900 rounded-xl p-1 border border-gray-700">
-                <button 
-                    onClick={() => setLanguage('vn')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 ${language === 'vn' ? 'bg-teal-600 text-white shadow-md' : 'text-gray-400 hover:text-gray-200'}`}
-                >
-                    VN
-                </button>
-                <button 
-                    onClick={() => setLanguage('en')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 ${language === 'en' ? 'bg-teal-600 text-white shadow-md' : 'text-gray-400 hover:text-gray-200'}`}
-                >
-                    EN
-                </button>
+        <div className="flex flex-row justify-between items-center mb-8 bg-gray-800/40 backdrop-blur-md p-3 sm:p-2.5 rounded-2xl border border-gray-700/50 gap-2 sm:gap-0">
+             
+             {/* Left: BRAND LOGO */}
+             <div className="pl-0 sm:pl-2">
+                <BrandLogo />
              </div>
 
-             <button
-                onClick={() => setIsLoadModalOpen(true)}
-                className="group flex items-center gap-2.5 px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-xl bg-gray-800 hover:bg-gray-750 border border-gray-700 text-gray-300 hover:text-white hover:border-teal-500/50 transition-all duration-300 shadow-sm hover:shadow-teal-500/10"
-            >
-                <FolderOpenIcon className="w-4 h-4 text-gray-400 group-hover:text-teal-400 transition-colors" />
-                <span>{t.library}</span>
-            </button>
+             {/* Right: CONTROLS */}
+             <div className="flex items-center gap-2 sm:gap-3">
+                {/* Language Switcher */}
+                <div className="flex items-center bg-gray-900 rounded-xl p-1 border border-gray-700">
+                    <button 
+                        onClick={() => setLanguage('vn')}
+                        className={`px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-bold transition-all duration-300 ${language === 'vn' ? 'bg-teal-600 text-white shadow-md' : 'text-gray-400 hover:text-gray-200'}`}
+                    >
+                        VN
+                    </button>
+                    <button 
+                        onClick={() => setLanguage('en')}
+                        className={`px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-bold transition-all duration-300 ${language === 'en' ? 'bg-teal-600 text-white shadow-md' : 'text-gray-400 hover:text-gray-200'}`}
+                    >
+                        EN
+                    </button>
+                </div>
+
+                <button
+                    onClick={() => setIsLoadModalOpen(true)}
+                    className="group flex items-center gap-2 px-3 py-2 sm:px-5 sm:py-2 text-xs font-bold uppercase tracking-wider rounded-xl bg-gray-800 hover:bg-gray-750 border border-gray-700 text-gray-300 hover:text-white hover:border-teal-500/50 transition-all duration-300 shadow-sm hover:shadow-teal-500/10"
+                >
+                    <FolderOpenIcon className="w-4 h-4 text-gray-400 group-hover:text-teal-400 transition-colors" />
+                    <span className="hidden sm:inline">{t.library}</span>
+                </button>
+             </div>
         </div>
 
-        <header className="text-center mb-10 relative">
+        <header className="text-center mb-8 sm:mb-12 relative px-4">
             {/* Ambient Background Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-teal-500/15 blur-[100px] rounded-full pointer-events-none"></div>
             
             <div className="flex flex-col items-center justify-center relative z-10">
-                <div className="flex items-center gap-3 mb-3">
-                    <MusicNoteIcon className="h-10 w-10 sm:h-12 sm:w-12 text-teal-400 drop-shadow-[0_0_25px_rgba(45,212,191,0.6)]" />
-                    <h1 className="text-4xl sm:text-6xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-teal-200 via-cyan-400 to-blue-500">
+                <div className="flex items-center gap-2 sm:gap-4 mb-3 sm:mb-4">
+                    <MusicNoteIcon className="h-8 w-8 sm:h-12 sm:w-12 text-teal-400 drop-shadow-[0_0_25px_rgba(45,212,191,0.6)]" />
+                    <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-teal-200 via-cyan-400 to-blue-500">
                         {t.appTitle}
                     </h1>
                 </div>
-                <p className="text-[10px] sm:text-xs text-gray-400 font-bold tracking-[0.3em] uppercase mt-1 leading-relaxed opacity-80 max-w-2xl">
+                <p className="text-[10px] sm:text-xs text-gray-400 font-bold tracking-widest sm:tracking-[0.3em] uppercase mt-0 sm:mt-1 leading-relaxed opacity-80 max-w-[90%] sm:max-w-3xl mx-auto">
                     {t.subTitle}
                 </p>
             </div>
@@ -789,9 +798,12 @@ const App: React.FC = () => {
         </main>
         
         <footer className="mt-24 py-8 text-center border-t border-gray-800/50">
-          <p className="text-xs text-gray-500 font-bold tracking-[0.3em] uppercase opacity-70">
-            {t.footer}
-          </p>
+          <div className="flex items-center justify-center gap-2">
+              <p className="text-xs text-gray-500 font-bold tracking-[0.3em] uppercase opacity-70">
+                {t.footer}
+              </p>
+              <BrandLogo className="transform scale-75 sm:scale-90 origin-bottom" showText={true} />
+          </div>
         </footer>
       </div>
       {isLoadModalOpen && (
